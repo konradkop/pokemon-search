@@ -1,20 +1,41 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { NativeWindStyleSheet } from "nativewind";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import HomeScreen from "./screens/HomeScreen";
+import { Provider } from "react-redux";
+import store from "./store";
+import PokemonScreen from "./screens/PokemonScreen";
+
+const Stack = createNativeStackNavigator();
+
+NativeWindStyleSheet.setOutput({
+  default: "native",
+});
+
+const defaultScreenOptions = { headerShown: false };
+
+export const screenTypes = {
+  home: "Home",
+  pokemon: "Pokemon",
+};
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Provider store={store}>
+        <Stack.Navigator>
+          <Stack.Screen
+            options={defaultScreenOptions}
+            name={screenTypes.home}
+            component={HomeScreen}
+          />
+          <Stack.Screen
+            options={defaultScreenOptions}
+            name={screenTypes.pokemon}
+            component={PokemonScreen}
+          />
+        </Stack.Navigator>
+      </Provider>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
